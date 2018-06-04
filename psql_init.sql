@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS people
+(
+id SERIAL,
+name TEXT NOT NULL,
+birthday DATE  NOT NULL,
+CONSTRAINT people_pkey PRIMARY KEY (id)
+)

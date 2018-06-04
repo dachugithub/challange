@@ -1,0 +1,6 @@
+FROM golang:1.10.2-alpine3.7 as builder
+COPY go.api /go/app
+COPY go.api/vendor/ /go/src/
+WORKDIR /go/app/
+RUN ls -al /go/src/github.com
+CMD ["go", "test", "-v", "."]
