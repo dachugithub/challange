@@ -19,4 +19,5 @@ POSTGRES_DB:
 APP_DB_HOST: 
 APP_SERVICE_PORT: 
 
-
+Diagram is created with draw.io. After downloading it can be opened there :
+https://www.draw.io/
