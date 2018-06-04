@@ -6,8 +6,10 @@
 imagePullSecrets:
   - name: private-registry
 
-#setting reuiered parameters for the app to run
+# setting reuiered parameters for the app to run
+# replica caount depends on resources
 hello:
+    replicaCount: 6 
     postgres_user: <fill in>
     postgres_password: <fill in>
     postgres-db: <fill in>
