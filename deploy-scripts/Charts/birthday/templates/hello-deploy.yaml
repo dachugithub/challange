@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "hello.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    component: hello-api
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.hello.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        component: hello-api
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.hello.image.repository }}{{ .Values.hello.image.tag }}"
+          imagePullPolicy: {{ .Values.hello.image.pullPolicy }}
+          env:
+            - name: POSTGRES_USER
+              value: "{{ .Values.hello.postgres_user }}"
+            - name: POSTGRES_PASSWORD
+              value: "{{ .Values.hello.postgres_password }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.hellol.postgres_db }}"
+            - name: APP_DB_HOST
+              value: "{{ .Values.hellol.app_db_host }}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres_password
+                  key: password
+          ports:
+            - containerPort: {{ .Values.hello.app_servcice_port }}
+          livenessProbe:
+            httpGet:
+              path: /__version
+              port: {{ .Values.hello.service.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: /__version
+              port: {{ .Values.hello.service.internalPort }}
+          resources:
+{{ toYaml .Values.hello.resources | indent 12 }}
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+    {{- end }}
