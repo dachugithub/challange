@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+ENV="challange"
+
+helm upgrade -i --wait --namespace ${NAMESPACE}                                 \
+   ${NAMESPACE} birthday/ -f birthday/values.yaml
