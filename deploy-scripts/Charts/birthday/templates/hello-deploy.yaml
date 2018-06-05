@@ -39,11 +39,11 @@ spec:
             - containerPort: {{ .Values.hello.app_servcice_port }}
           livenessProbe:
             httpGet:
-              path: /__version
+              path: /healthcheck
               port: {{ .Values.hello.service.internalPort }}
           readinessProbe:
             httpGet:
-              path: /__version
+              path: /healthcheck
               port: {{ .Values.hello.service.internalPort }}
           resources:
 {{ toYaml .Values.hello.resources | indent 12 }}

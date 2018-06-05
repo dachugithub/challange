@@ -123,6 +123,11 @@ func (a *App) postBirthday(w http.ResponseWriter, r *http.Request) {
     // in description it was 201 No content, no content is 204.
     respondWithJSON(w, http.StatusCreated, "")
 }
+// function that will be used in the deployment
+func (a *App) healthcheck(w http.ResponseWriter, r *http.Request) {
+    respondWithJSON(w, http.StatusOK, "")
+}
+
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
     respondWithJSON(w, code, map[string]string{"error": message})
@@ -141,6 +146,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 func (a *App) initializeRoutes() {
     a.Router.HandleFunc("/hello/{name:[a-zA-Z]+}", a.getBirthday).Methods("GET")
     a.Router.HandleFunc("/hello/{name:[a-zA-Z]+}", a.postBirthday).Methods("POST")
+    a.Router.HandleFunc("/healthcheck", a.healthcheck).Methods("GET")
 }
 
 
