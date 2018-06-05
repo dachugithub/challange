@@ -15,10 +15,11 @@ services:
       context: .
       dockerfile: Dockerfile.ci
     environment:
-      POSTGRES_USER: "worker1"
-      POSTGRES_PASSWORD: "worker1_pw"
-      POSTGRES_DB: "birthday"
+      APP_DB_USERNAME: "worker1"
+      APP_DB_PASSWORD: "worker1_pw"
+      APP_DB_NAME: "birthday"
       APP_DB_HOST: "192.168.99.100"
+      APP_SERVICE_PORT: "8000"
     network_mode: "service:postgres"
     depends_on:
       - postgres

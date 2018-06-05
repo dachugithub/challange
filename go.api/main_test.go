@@ -87,7 +87,7 @@ func TestGetNonExistentPeople(t *testing.T) {
 func TestCreateFirstPerson(t *testing.T) {
     clearTable()
 
-    payload := []byte(`{"date":"2000-01-01"}`)
+    payload := []byte(`{"dateOfBirth":"2000-01-01"}`)
 
     req, _ := http.NewRequest("POST", "/hello/john", bytes.NewBuffer(payload))
     response := executeRequest(req)
@@ -139,6 +139,37 @@ func TestGetPersonBirthdayToday(t *testing.T) {
 
 func TestUpdateBirthday(t *testing.T) {
 // not requiere in the task, placeholder for future
+    clearTable()
+
+    payload := []byte(`{"dateOfBirth":"2000-01-01"}`)
+
+    req, _ := http.NewRequest("POST", "/hello/john", bytes.NewBuffer(payload))
+    response := executeRequest(req)
+
+    checkResponseCode(t, http.StatusCreated, response.Code)
+
+    payload = []byte(`{"dateOfBirth":"1998-03-05"}`)
+    req, _ = http.NewRequest("POST", "/hello/john", bytes.NewBuffer(payload))
+    response = executeRequest(req)
+
+    var m map[string]interface{}
+    json.Unmarshal(response.Body.Bytes(), &m)
+
+    if m != nil {
+        t.Errorf("Expected empty respons. Got '%v'", m)
+    }
+
+    req, _ = http.NewRequest("GET", "/hello/john", nil)
+    response = executeRequest(req)
+
+    checkResponseCode(t, http.StatusOK, response.Code)
+
+    var updated map[string]string
+    json.Unmarshal(response.Body.Bytes(), &updated)
+    if updated["message"] != "john's birthday is on March-05" {
+        t.Errorf("Expected the 'message' key to be '. Got '%s'", updated["message"])
+    }
+
 }
 
 func TestDeleteBirthday(t *testing.T) {
