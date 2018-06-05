@@ -1,14 +1,16 @@
 # challange
 to build: go build (all dependencies are vendored)
-to test agains external psql db : go test -v
+to test agains external psql db, set env vars and : go test -v
 
 To test standalone (ie. CI):
+docker-compose -f docker-compose-ci.yml build
 docker-compose -f docker-compose-ci.yml up
 NOTE:
 I am using docker-machine. Please adjust docker-compose-ci.yml APP_DB_HOST: "192.168.99.100"
-to your docker networking model.
+to your docker networking model in most cases 127.0.0.1.
 
 to build final image:
+
 docker build -t final-api .
 
 NOTE:
